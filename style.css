@@ -1,0 +1,305 @@
+/* ==========================================================================
+   Hexa Merge & Multiply: The Splitter — Neon Cyberpunk Stylesheet
+   ========================================================================== */
+
+:root {
+  --cyan: #00f3ff;
+  --pink: #ff007f;
+  --purple: #bd00ff;
+  --bg: #000000;
+  --panel-bg: #0a0a12;
+  --panel-border: rgba(0, 243, 255, 0.35);
+  --text-dim: #7c8aa8;
+  --board-w: 380px;
+  --board-h: 640px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: #e8f0ff;
+  font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+  overflow-x: hidden;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 12px 32px;
+  gap: 10px;
+}
+
+/* ---------- Header ---------- */
+
+.topbar {
+  text-align: center;
+  margin: 4px 0 2px;
+}
+
+.logo {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.1rem, 4vw, 2rem);
+  letter-spacing: 2px;
+  margin: 0;
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.6);
+}
+
+.subtitle {
+  margin: 2px 0 0;
+  color: var(--text-dim);
+  letter-spacing: 4px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.accent-cyan   { color: var(--cyan);   text-shadow: 0 0 8px var(--cyan); }
+.accent-pink   { color: var(--pink);   text-shadow: 0 0 8px var(--pink); }
+.accent-purple { color: var(--purple); text-shadow: 0 0 8px var(--purple); }
+
+/* ---------- Layout ---------- */
+
+.game-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.hud {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 190px;
+  flex-shrink: 0;
+}
+
+/* ---------- Cards ---------- */
+
+.stat-card, .shop-card, .next-block-card {
+  background: linear-gradient(160deg, var(--panel-bg), #05050a);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  box-shadow: 0 0 14px rgba(0, 243, 255, 0.12), inset 0 0 20px rgba(189, 0, 255, 0.05);
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+}
+
+.stat-value {
+  display: block;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.shop-desc {
+  margin: 6px 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.shop-desc strong {
+  color: var(--cyan);
+  text-shadow: 0 0 6px var(--cyan);
+}
+
+/* ---------- Buttons ---------- */
+
+.neon-btn {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid var(--cyan);
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  width: 100%;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.5), inset 0 0 8px rgba(0, 243, 255, 0.15);
+  text-transform: uppercase;
+}
+
+.neon-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.9), inset 0 0 12px rgba(0, 243, 255, 0.3);
+}
+
+.neon-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.neon-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-cyan   { border-color: var(--cyan);   box-shadow: 0 0 10px rgba(0,243,255,0.5); }
+.btn-pink   { border-color: var(--pink);   box-shadow: 0 0 10px rgba(255,0,127,0.5); }
+.btn-purple { border-color: var(--purple); box-shadow: 0 0 10px rgba(189,0,255,0.5); }
+
+.btn-pink:hover:not(:disabled)   { box-shadow: 0 0 20px rgba(255,0,127,0.9); }
+.btn-purple:hover:not(:disabled) { box-shadow: 0 0 20px rgba(189,0,255,0.9); }
+
+#upgradeCost {
+  font-size: 0.65rem;
+  opacity: 0.8;
+}
+
+/* ---------- Board ---------- */
+
+.board-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.board-frame {
+  position: relative;
+  width: var(--board-w);
+  max-width: 92vw;
+  aspect-ratio: 380 / 640;
+  border-radius: 14px;
+  border: 2px solid var(--cyan);
+  background: #000;
+  box-shadow:
+    0 0 18px rgba(0, 243, 255, 0.55),
+    0 0 40px rgba(189, 0, 255, 0.25),
+    inset 0 0 30px rgba(0, 243, 255, 0.08);
+  overflow: hidden;
+  touch-action: none;
+}
+
+#gameCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+/* ---------- Overlays ---------- */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(2px);
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.overlay h2 {
+  font-family: 'Orbitron', sans-serif;
+  margin: 0;
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px var(--cyan);
+}
+
+.overlay p {
+  margin: 0;
+  color: #cfe0ff;
+  font-size: 0.9rem;
+  max-width: 260px;
+}
+
+.overlay-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 260px;
+}
+
+.rescue-hint {
+  font-size: 0.7rem !important;
+  color: var(--text-dim) !important;
+}
+
+/* ---------- Next block preview ---------- */
+
+.next-block-preview {
+  margin-top: 6px;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #fff;
+  background: radial-gradient(circle at 35% 30%, rgba(0,243,255,0.35), rgba(189,0,255,0.15) 60%, transparent);
+  border: 2px solid var(--cyan);
+  box-shadow: 0 0 14px rgba(0, 243, 255, 0.6);
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  text-align: center;
+  margin-top: 6px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 820px) {
+  .game-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+  .hud {
+    flex-direction: row;
+    width: 100%;
+    max-width: var(--board-w);
+    justify-content: space-between;
+  }
+  .hud-left, .hud-right {
+    flex-wrap: wrap;
+  }
+  .stat-card, .shop-card, .next-block-card {
+    flex: 1 1 auto;
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 420px) {
+  :root {
+    --board-w: 94vw;
+  }
+  .logo {
+    letter-spacing: 1px;
+  }
+}
