@@ -10,8 +10,12 @@
   --panel-bg: #0a0a12;
   --panel-border: rgba(0, 243, 255, 0.35);
   --text-dim: #7c8aa8;
-  --board-w: 380px;
-  --board-h: 640px;
+  /* Board is 380x640 (ratio 380/640 = 0.594). This vw figure is the width
+     cap (92vw) re-expressed as an equivalent height cap, so a single
+     min() on height can enforce both the width and height limits without
+     distorting the aspect ratio. See .board-frame below. */
+  --board-vw-cap: 155vw;
+  --board-vh-cap: 66vh;
 }
 
 * {
@@ -29,19 +33,19 @@ html, body {
 }
 
 #app {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 12px 12px 32px;
-  gap: 10px;
+  padding: 10px 10px 12px;
+  gap: 8px;
 }
 
 /* ---------- Header ---------- */
 
 .topbar {
   text-align: center;
-  margin: 4px 0 2px;
+  margin: 2px 0;
 }
 
 .logo {
@@ -91,7 +95,7 @@ html, body {
   background: linear-gradient(160deg, var(--panel-bg), #05050a);
   border: 1px solid var(--panel-border);
   border-radius: 10px;
-  padding: 10px 14px;
+  padding: 7px 12px;
   box-shadow: 0 0 14px rgba(0, 243, 255, 0.12), inset 0 0 20px rgba(189, 0, 255, 0.05);
 }
 
@@ -176,8 +180,8 @@ html, body {
 
 .board-frame {
   position: relative;
-  width: var(--board-w);
-  max-width: 92vw;
+  height: min(640px, var(--board-vh-cap), var(--board-vw-cap));
+  width: auto;
   aspect-ratio: 380 / 640;
   border-radius: 14px;
   border: 2px solid var(--cyan);
@@ -283,7 +287,7 @@ html, body {
   .hud {
     flex-direction: row;
     width: 100%;
-    max-width: var(--board-w);
+    max-width: min(420px, 92vw);
     justify-content: space-between;
   }
   .hud-left, .hud-right {
@@ -297,9 +301,71 @@ html, body {
 
 @media (max-width: 420px) {
   :root {
-    --board-w: 94vw;
+    --board-vw-cap: 158vw;
   }
   .logo {
     letter-spacing: 1px;
+  }
+}
+
+/* Short viewports (small browser windows, landscape phones): the board is
+   the one thing that must always fit fully on screen, so shrink its vh
+   budget further and drop the footer to free up vertical space for it. */
+@media (max-height: 700px) {
+  :root {
+    --board-vh-cap: 56vh;
+  }
+  .footer {
+    display: none;
+  }
+}
+
+/* Narrow phones in portrait: the hud row below the board (shop + next
+   block) still needs its own headroom, so trim the board's vh budget a
+   little further than the general short-viewport rule above. */
+@media (max-width: 480px) and (max-height: 960px) {
+  :root {
+    --board-vh-cap: 46vh;
+  }
+  .next-block-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .next-block-preview {
+    margin-top: 0;
+  }
+}
+
+@media (max-height: 560px) {
+  :root {
+    --board-vh-cap: 44vh;
+  }
+  .topbar {
+    display: none;
+  }
+  .next-block-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .next-block-preview {
+    margin-top: 0;
+  }
+}
+
+/* Landscape phones: short on height but with width to spare. Go back to
+   the side-by-side desktop layout instead of stacking the hud above and
+   below the board, since stacking is what runs out of vertical room. */
+@media (max-height: 480px) and (min-width: 560px) {
+  .game-layout {
+    flex-direction: row;
+    align-items: center;
+  }
+  .hud {
+    flex-direction: column;
+    width: 150px;
   }
 }
