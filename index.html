@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Hexa Merge & Multiply: The Splitter</title>
+<meta name="description" content="Neonowa gra logiczno-zręcznościowa z fizyką - łącz, mnóż i dziel heksagonalne klocki!">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <header class="topbar">
+    <h1 class="logo">HEXA <span class="accent-pink">MERGE</span> <span class="accent-purple">&amp;</span> <span class="accent-cyan">MULTIPLY</span></h1>
+    <p class="subtitle">The Splitter</p>
+  </header>
+
+  <main class="game-layout">
+
+    <section class="hud hud-left">
+      <div class="stat-card">
+        <span class="stat-label">Wynik</span>
+        <span id="scoreValue" class="stat-value accent-cyan">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Rekord</span>
+        <span id="highScoreValue" class="stat-value accent-pink">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Złoto</span>
+        <span id="goldValue" class="stat-value accent-purple">0</span>
+      </div>
+    </section>
+
+    <section class="board-wrap">
+      <div id="boardFrame" class="board-frame">
+        <canvas id="gameCanvas"></canvas>
+        <div id="startOverlay" class="overlay">
+          <h2>Gotowy?</h2>
+          <p>Poruszaj myszką / palcem, kliknij aby zrzucić klocek.</p>
+          <button id="startBtn" class="neon-btn btn-cyan">START</button>
+        </div>
+        <div id="gameOverOverlay" class="overlay hidden">
+          <h2 class="accent-pink">KONIEC GRY</h2>
+          <p>Twój wynik: <span id="finalScore">0</span></p>
+          <div class="overlay-actions">
+            <button id="restartBtn" class="neon-btn btn-cyan">RESTART</button>
+            <button id="rescueBtn" class="neon-btn btn-purple">ZATRZYMAJ I WYCZYŚĆ DÓŁ PLANSZY</button>
+          </div>
+          <p class="rescue-hint">(Wkrótce: obejrzyj reklamę, aby uratować grę)</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="hud hud-right">
+      <div class="shop-card">
+        <span class="stat-label">Sklep Ulepszeń</span>
+        <p class="shop-desc">Aktualny start: <strong id="currentStartValue">2</strong></p>
+        <button id="upgradeBtn" class="neon-btn btn-purple">
+          Kup Wyższy Poziom Startowy<br>
+          <span id="upgradeCost">500 złota</span>
+        </button>
+      </div>
+      <div class="next-block-card">
+        <span class="stat-label">Następny klocek</span>
+        <div id="nextBlockPreview" class="next-block-preview">2</div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>Hexa Merge &amp; Multiply: The Splitter — zbuduj kaskadę potęg dwójki.</p>
+  </footer>
+
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
